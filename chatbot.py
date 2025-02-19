@@ -41,9 +41,11 @@ def main():
     chatgpt = HKBU_ChatGPT(config)
     chatgpt_handler = MessageHandler(Filters.text & (~Filters.command), equiped_chatgpt)
     dispatcher.add_handler(chatgpt_handler)
+
     # on different commands
     dispatcher.add_handler(CommandHandler("add", add))
     dispatcher.add_handler(CommandHandler("help", help_command))
+    dispatcher.add_handler(CommandHandler("hello", hello_command))
 
     # To start the bot
     updater.start_polling()
@@ -84,6 +86,19 @@ def equiped_chatgpt(update, context):
    logging.info("Context: %s", context)
    context.bot.send_message(chat_id=update.effective_chat.id, text=reply_message)
 
+
+# hello_command
+def hello_command(update: Update, context: CallbackContext) -> None:
+    """Send a message when the command /hello is issued."""
+    try:
+        name = ' '.join(context.args)
+        if not name:
+            update.message.reply_text("Please provide a name after /hello, e.g., /hello Kevin")
+            return
+        update.message.reply_text(f"Good day, {name}!")
+    except Exception as e:
+        logging.error(str(e))
+        update.message.reply_text("Something went wrong. Please try again.")
 
 if __name__ == '__main__':
     main()
