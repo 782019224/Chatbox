@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for chatbot-comp7940-hidden-snowflake-9098 on 2025-03-02T10:02:02+08:00
+# fly.toml app configuration file generated for comp7940-lab5-jeff on 2025-03-02T10:08:37+08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'chatbot-comp7940-hidden-snowflake-9098'
+app = 'comp7940-lab5-jeff'
 primary_region = 'hkg'
 
 [build]
@@ -12,22 +12,15 @@ primary_region = 'hkg'
 [env]
   PORT = '8080'
 
-[[services]]
-  protocol = 'tcp'
-  internal_port = 8000
-
-  [[services.ports]]
-    port = 80
-    handlers = ['http']
-
-  [[services.ports]]
-    port = 443
-    handlers = ['tls', 'http']
-
-  [services.concurrency]
-    type = 'connections'
-    hard_limit = 25
-    soft_limit = 20
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
 
 [[vm]]
-  size = 'shared-cpu-1x'
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
