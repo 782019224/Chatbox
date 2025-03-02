@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for chatbot-comp7940-wispy-voice-644 on 2025-03-02T09:58:11+08:00
+# fly.toml app configuration file generated for chatbot-comp7940-hidden-snowflake-9098 on 2025-03-02T10:02:02+08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'chatbot-comp7940-wispy-voice-644'
-primary_region = 'nrt'
+app = 'chatbot-comp7940-hidden-snowflake-9098'
+primary_region = 'hkg'
 
 [build]
   builder = 'paketobuildpacks/builder:base'
