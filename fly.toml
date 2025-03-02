@@ -1,7 +1,7 @@
 # fly.toml app configuration file generated for chatbot-hongduan on 2024-02-18T14:33:24+08:00
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
-app = 'chatbot-hongduan'
+app = 'chatbot-comp7940'
 primary_region = 'nrt'
 [build]
 builder = 'paketobuildpacks/builder:base'
