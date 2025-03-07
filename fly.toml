@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for comp7940-lab5-chatbot on 2025-03-07T13:32:12+08:00
+# fly.toml app configuration file generated for comp7940-lab5chatbot on 2025-03-07T14:36:58+08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'comp7940-lab5-chatbot'
+app = 'comp7940-lab5chatbot'
 primary_region = 'hkg'
 
 [build]
