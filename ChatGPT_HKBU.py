@@ -1,5 +1,6 @@
 import configparser
 import requests
+import os
 
 class HKBU_ChatGPT():
     def __init__(self,config_='./config.ini'):
@@ -31,6 +32,7 @@ class HKBU_ChatGPT():
             return data['choices'][0]['message']['content']
         else:
             return 'Error:'
+
 if __name__ == '__main__':
     ChatGPT_test = HKBU_ChatGPT()
     while True:

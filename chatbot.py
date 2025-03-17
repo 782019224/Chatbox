@@ -1,11 +1,13 @@
 # import telegram
+import os
+
 from ChatGPT_HKBU import HKBU_ChatGPT
 from telegram import Update
 from telegram.ext import Updater, MessageHandler, Filters, CommandHandler, CallbackContext
 import configparser
 import logging
 import redis
-
+import requests
 global redis1
 
 
@@ -38,7 +40,7 @@ def main():
 
     #dispatcher for chatgpt
     global chatgpt
-    chatgpt = HKBU_ChatGPT(config)
+    chatgpt = HKBU_ChatGPT()
     chatgpt_handler = MessageHandler(Filters.text & (~Filters.command), equiped_chatgpt)
     dispatcher.add_handler(chatgpt_handler)
 
