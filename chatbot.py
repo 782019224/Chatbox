@@ -1,14 +1,44 @@
-# import telegram
+import configparser
+import requests
 import os
-
-from ChatGPT_HKBU import HKBU_ChatGPT
 from telegram import Update
 from telegram.ext import Updater, MessageHandler, Filters, CommandHandler, CallbackContext
-import configparser
 import logging
 import redis
-import requests
+
 global redis1
+
+
+class HKBU_ChatGPT():
+    def __init__(self, config_='./config.ini'):
+        if type(config_) == str:
+            self.config = configparser.ConfigParser()
+            self.config.read(config_)
+        elif type(config_) == configparser.ConfigParser:
+            self.config = config_
+
+    def submit(self, message):
+        conversation = [{"role": "user", "content": message}]
+        url = (
+                  self.config['CHATGPT']['BASICURL']
+              ) + "/deployments/" + (
+                  self.config['CHATGPT']['MODELNAME']
+              ) + "/chat/completions/?api-version=" + (
+                  self.config['CHATGPT']['APIVERSION']
+              )
+        headers = {
+            'Content-Type': 'application/json',
+            'api-key': self.config['CHATGPT']['ACCESS_TOKEN']
+        }
+        payload = {
+            'messages': conversation
+        }
+        response = requests.post(url, json=payload, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            return data['choices'][0]['message']['content']
+        else:
+            return 'Error:'
 
 
 def main():
@@ -37,8 +67,7 @@ def main():
     # echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
     # dispatcher.add_handler(echo_handler)
 
-
-    #dispatcher for chatgpt
+    # dispatcher for chatgpt
     global chatgpt
     chatgpt = HKBU_ChatGPT()
     chatgpt_handler = MessageHandler(Filters.text & (~Filters.command), equiped_chatgpt)
@@ -81,12 +110,13 @@ def add(update: Update, context: CallbackContext) -> None:
     except (IndexError, ValueError):
         update.message.reply_text('Usage: /add <keyword>')
 
+
 def equiped_chatgpt(update, context):
-   user_message = update.message.text
-   reply_message = chatgpt.submit(user_message)
-   logging.info("Update: %s", update)
-   logging.info("Context: %s", context)
-   context.bot.send_message(chat_id=update.effective_chat.id, text=reply_message)
+    user_message = update.message.text
+    reply_message = chatgpt.submit(user_message)
+    logging.info("Update: %s", update)
+    logging.info("Context: %s", context)
+    context.bot.send_message(chat_id=update.effective_chat.id, text=reply_message)
 
 
 # hello_command
@@ -101,6 +131,7 @@ def hello_command(update: Update, context: CallbackContext) -> None:
     except Exception as e:
         logging.error(str(e))
         update.message.reply_text("Something went wrong. Please try again.")
+
 
 if __name__ == '__main__':
     main()
